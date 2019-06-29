@@ -15,7 +15,7 @@ print(lineNo)
 
 #find all charecters
 charDict={}
-vineel
+kranthi
 for row in allData:
     charName = row[5]#charecter name 
     if charName in charDict:
