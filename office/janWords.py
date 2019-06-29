@@ -17,6 +17,12 @@ print(lineNo)
 # put all the words spoken m y micheal and their count in a dictionary 
 wordsDict={}
 
+sadhj
+ gh
+
+ gjgfj
+
+ fdg
 for row in allData:
     charName = row[5]#charecter name
     if 'jan' in charName.lower():
