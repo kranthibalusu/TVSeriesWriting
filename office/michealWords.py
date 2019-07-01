@@ -89,7 +89,8 @@ uniqWordsMich = {}
 
 for k in wordsDict:
     if k in wordsDictAll:
-        frac= (wordsDict[k])**2/wordsDictAll[k]
+        frac= (wordsDict[k])**2/wordsDictAll[k]*michealWordFrac
+        #/wordsDictAll[k]
         #print(frac)
         uniqWordsMich[k]= frac
         #*michealWordFrac
@@ -103,6 +104,8 @@ sorted_uniqWordsMich= [(k, uniqWordsMich[k]) for k in sorted(uniqWordsMich, key=
 
 #looking at only the top 15 words by micheal 
 uniqWordsMichTop = sorted_uniqWordsMich[:15]
+
+print(uniqWordsMichTop)
 
 with open('michealWordsUnique.csv', 'w') as myfile2:
      wr = csv.writer(myfile2, quoting=csv.QUOTE_ALL)
