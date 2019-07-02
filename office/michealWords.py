@@ -1,6 +1,8 @@
 #reading the csv file 
 import csv
-import re
+import re #reaplacing library
+import nltk # for parts of speech recogn, this library should be downloaded
+#nltk.download() #run only the first time
 
 #read and sparse data
 f = open("the-office-lines.csv",'r')
@@ -16,25 +18,41 @@ print(lineNo)
 
 # put all the words spoken by everybody and their count in a dictionary 
 wordsDictAll={} 
-noWordsAll=0 #number of words all 
+noWordsAll=0 #number of words all
+
+# put all the words spoken by micheal and their count in a dictionary 
+wordsDict={}
+noWordsMicheal=0 #number of words micheal 
+
+
 
 for row in allData:
     line=row[4] #line spoken
-    for word in line.split():
-        noWordsAll=noWordsAll +1
+    tokens = nltk.word_tokenize(line)
+    POSTagged = nltk.pos_tag(tokens)
+    for word, Pos in POSTagged:
         wordFilt = word.lower()
         wordFilt = re.sub("[^a-zA-Z]+", "", wordFilt)
-        if wordFilt in wordsDictAll:
-            wordsDictAll[wordFilt] = wordsDictAll[wordFilt]+1
-        else:
-            wordsDictAll[wordFilt] = 1
+        if Pos != 'CONJ' or Pos !='PRON' or Pos !='PRT'or Pos !='NN'or Pos !='PRP':
+            noWordsAll=noWordsAll +1
+            if wordFilt in wordsDictAll:
+                wordsDictAll[wordFilt] = wordsDictAll[wordFilt]+1
+            else:
+                wordsDictAll[wordFilt] = 1
+            charName = row[5]#charecter name
+            if 'michael' in charName.lower():
+                noWordsMicheal=noWordsMicheal+1
+                if wordFilt in wordsDict:
+                    wordsDict[wordFilt] = wordsDict[wordFilt]+1
+                else:
+                    wordsDict[wordFilt] = 1
 
 
-# order by most popular word
+# order by most popular word by everybody 
 sorted_wordsDictAll= [(k, wordsDictAll[k]) for k in sorted(wordsDictAll, key=wordsDictAll.get, reverse = True)]
 
 
-#looking at only the top 15 words by micheal 
+#looking at only the top 15 words by everybody 
 wordsDictTopAll = sorted_wordsDictAll[:15]
 
 with open('AllWords.csv', 'w') as myfile:
@@ -43,26 +61,8 @@ with open('AllWords.csv', 'w') as myfile:
 myfile.close()
 
 
-# put all the words spoken by micheal and their count in a dictionary 
-wordsDict={}
-noWordsMicheal=0 #number of words micheal 
 
-for row in allData:
-    charName = row[5]#charecter name
-    if 'michael' in charName.lower():
-        line=row[4] #line spoken
-        #print(line)
-        for word in line.split():
-            noWordsMicheal=noWordsMicheal+1
-            wordFilt = word.lower()
-            wordFilt = re.sub("[^a-zA-Z]+", "", wordFilt)
-            if wordFilt in wordsDict:
-                wordsDict[wordFilt] = wordsDict[wordFilt]+1
-            else:
-                wordsDict[wordFilt] = 1
-
-
-# order by most popular word
+# order by most popular word by micheal
 sorted_wordsDict= [(k, wordsDict[k]) for k in sorted(wordsDict, key=wordsDict.get, reverse = True)]
 
 
@@ -90,11 +90,8 @@ uniqWordsMich = {}
 for k in wordsDict:
     if k in wordsDictAll:
         frac= (wordsDict[k])**2/wordsDictAll[k]*michealWordFrac
-        #/wordsDictAll[k]
-        #print(frac)
         uniqWordsMich[k]= frac
-        #*michealWordFrac
-        #print(uniqWordsMich[k])
+
         
     
 
