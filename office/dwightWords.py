@@ -22,7 +22,7 @@ noWordsAll=0 #number of words all
 
 # put all the words spoken by micheal and their count in a dictionary 
 wordsDict={}
-noWordsMicheal=0 #number of words micheal 
+noWordsDwight=0 #number of words micheal 
 
 '''
 condit=[Pos!='CONJ',
@@ -61,9 +61,9 @@ for row in allData:
             else:
                 wordsDictAll[wordFilt] = 1
             charName = row[5]#charecter name
-            #only micheal's words
-            if 'michael' in charName.lower():
-                noWordsMicheal=noWordsMicheal+1
+            #only Dwight's words
+            if 'dwight' in charName.lower():
+                noWordsDwight=noWordsDwight+1
                 if wordFilt in wordsDict:
                     wordsDict[wordFilt] = wordsDict[wordFilt]+1
                 else:
@@ -91,7 +91,7 @@ sorted_wordsDict= [(k, wordsDict[k]) for k in sorted(wordsDict, key=wordsDict.ge
 #looking at only the top 15 words by micheal 
 wordsDictTop = sorted_wordsDict[:15]
 
-with open('michealWords.csv', 'w') as myfile1:
+with open('DwightWords.csv', 'w') as myfile1:
      wr = csv.writer(myfile1, quoting=csv.QUOTE_ALL)
      wr.writerows(sorted_wordsDict)
 myfile1.close()
@@ -103,32 +103,32 @@ myfile1.close()
 (wordsSpokenByMicheal^2/wordsSpokenByEverybody) *(everyboysWordCount/MichealsWordCount)
 
 '''
-michealWordFrac= noWordsAll/noWordsMicheal
+DwightWordFrac= noWordsAll/noWordsDwight
 
 
 #loop for everyword spoken by micheal
-uniqWordsMich = {}
+uniqWordsDwight = {}
 
 for k in wordsDict:
     if k in wordsDictAll:
-        frac= ((wordsDict[k])**2/wordsDictAll[k])*michealWordFrac
-        uniqWordsMich[k]= frac
+        frac= ((wordsDict[k])**2/wordsDictAll[k])*DwightWordFrac
+        uniqWordsDwight[k]= frac
 
         
     
 
 # order by most popular word
-sorted_uniqWordsMich= [(k, uniqWordsMich[k]) for k in sorted(uniqWordsMich, key=uniqWordsMich.get, reverse = True)]
+sorted_uniqWordsDwight= [(k, uniqWordsDwight[k]) for k in sorted(uniqWordsDwight, key=uniqWordsDwight.get, reverse = True)]
 
 
 #looking at only the top 15 words by micheal 
-uniqWordsMichTop = sorted_uniqWordsMich[:15]
+uniqWordsDwightTop = sorted_uniqWordsDwight[:15]
 
-print(uniqWordsMichTop)
+print(uniqWordsDwightTop)
 
-with open('michealWordsUnique.csv', 'w') as myfile2:
+with open('DwightWordsUnique.csv', 'w') as myfile2:
      wr = csv.writer(myfile2, quoting=csv.QUOTE_ALL)
-     wr.writerows(sorted_uniqWordsMich)
+     wr.writerows(sorted_uniqWordsDwight)
 myfile2.close()    
 
 
